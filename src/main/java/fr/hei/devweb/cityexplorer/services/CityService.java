@@ -23,5 +23,12 @@ public class CityService {
 	public List<City> listAllCities() {
 		return cityDao.listCities();
 	}
+	
+	public City getCity(Integer id) {
+		if(id == null) {
+			throw new IllegalArgumentException("City id must be provided.");
+		}
+		return cityDao.getCity(id);
+	}
 
 }

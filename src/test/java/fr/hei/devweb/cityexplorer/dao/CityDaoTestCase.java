@@ -32,4 +32,16 @@ public class CityDaoTestCase extends AbstractDaoTestCase {
 				Assertions.tuple(3, "City 3", "Summary 3")
 		);
 	}
+
+	@Test
+	public void shouldGetCities() throws Exception {
+		// WHEN
+		City city = cityDao.getCity(1);
+		// THEN
+		Assertions.assertThat(city).isNotNull();
+		Assertions.assertThat(city.getId()).isEqualTo(1);
+		Assertions.assertThat(city.getName()).isEqualTo("City 1");
+		Assertions.assertThat(city.getSummary()).isEqualTo("Summary 1");
+		
+	}
 }

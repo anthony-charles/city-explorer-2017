@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<title>City Explorer</title>
+<link rel="stylesheet" href="bootstrap/bootstrap.min.css">
+<link rel="stylesheet" href="fontawesome/css/font-awesome.min.css">
+<link rel="stylesheet" href="css/custom.css">
+
+</head>
+<body>
+	<header th:replace="~{common::header}"></header>
+
+	<div id="mainContent" class="container-fluid">
+		<section class="citydetail">
+			<section class="citybox">
+				<h3 th:text="${city.name}"></h3>
+				<div class="cityinfos">
+					<p th:text="${city.summary}" class="summary"></p>
+					<div class="btn-group citylike" role="group">
+						<button type="button" class="btn btn-success">
+							<i class="fa fa-thumbs-up" aria-hidden="true"></i> 0
+						</button>
+						<button type="button" class="btn btn-danger">
+							<i class="fa fa-thumbs-down" aria-hidden="true"></i> 0
+						</button>
+					</div>
+				</div>
+				<div class="cityspotlights">
+					<div class="btn-group" role="group">
+						<button type="button" class="btn btn-restaurant" title="Where to eat?">
+							<i class="fa fa-cutlery" aria-hidden="true"></i>
+						</button>
+						<button type="button" class="btn btn-bar" title="Where to drink?">
+							<i class="fa fa-glass" aria-hidden="true"></i>
+						</button>
+						<button type="button" class="btn btn-music" title="Where to listen to music?">
+							<i class="fa fa-music" aria-hidden="true"></i>
+						</button>
+						<button type="button" class="btn btn-culture" title="Where to visit?">
+							<i class="fa fa-book" aria-hidden="true"></i>
+						</button>
+					</div>
+				</div>
+				<aside class="cityPhoto">
+					<img src="img/city-no-photo.png" alt="Vignette Londres">
+				</aside>
+			</section>
+			<section class="citycomments">
+				<h3>Comments</h3>
+				<p>Have you been to this city? What did you think? Leave a comment, we want to know!</p>
+				<div class="comments">
+					<article class="commentbox" id="newcomment">
+						<h4>
+							<span class="btn-open" onclick="document.getElementById('newcomment').classList.add('opened')"><i class="fa fa-plus-square" aria-hidden="true"></i></span>
+							<span class="btn-close" onclick="document.getElementById('newcomment').classList.remove('opened')"><i class="fa fa-minus-square" aria-hidden="true"></i></span>
+							Add a new comment
+						</h4>
+						<form method="post">
+							<div class="form-group">
+								<input type="text" class="form-control" name="pseudo" placeholder="Pseudo">
+							</div>
+							<div class="form-group">
+								<textarea class="form-control" name="comment" placeholder="Your comment"></textarea>
+							</div>
+							<div class="form-group">
+								<input type="submit" class="btn btn-primary" value="Add my comment">
+							</div>
+						</form>
+					</article>
+					<article class="commentbox">
+						<h4>Jean123 <small><i class="fa fa-calendar" aria-hidden="true"></i> 12/11/2016</small></h4>
+						<p class="commenttext">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed et urna a ipsum iaculis placerat. Praesent at velit at libero pharetra fringilla. Duis sed fringilla mauris, sit amet scelerisque tellus. Nam eu sagittis nisi. Aliquam erat volutpat. Nunc eu rutrum tellus. Quisque eget augue iaculis, tempor elit vel, facilisis ex. In in ex magna. Sed imperdiet efficitur lacus non ultricies. Curabitur tincidunt nibh at lorem malesuada, id feugiat velit egestas. Pellentesque facilisis tortor sed mollis hendrerit.</p>
+					</article>
+					<article class="commentbox">
+						<h4>Jean123 <small><i class="fa fa-calendar" aria-hidden="true"></i> 12/11/2016</small></h4>
+						<p class="commenttext">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+					</article>
+					<article class="commentbox">
+						<h4>Jean123 <small><i class="fa fa-calendar" aria-hidden="true"></i> 12/11/2016</small></h4>
+						<p class="commenttext">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed et urna a ipsum iaculis placerat. Praesent at velit at libero pharetra fringilla. Duis sed fringilla mauris, sit amet scelerisque tellus. Nam eu sagittis nisi.</p>
+					</article>
+					<article class="commentbox">
+						<h4>Jean123 <small><i class="fa fa-calendar" aria-hidden="true"></i> 12/11/2016</small></h4>
+						<p class="commenttext">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed et urna a ipsum iaculis placerat. Praesent at velit at libero pharetra fringilla. Duis sed fringilla mauris, sit amet scelerisque tellus. Nam eu sagittis nisi. Aliquam erat volutpat. Nunc eu rutrum tellus. Quisque eget augue iaculis, tempor elit vel, facilisis ex. In in ex magna. Sed imperdiet efficitur lacus non ultricies. Curabitur tincidunt nibh at lorem malesuada, id feugiat velit egestas. Pellentesque facilisis tortor sed mollis hendrerit.</p>
+					</article>
+					<article class="commentbox">
+						<h4>Jean123 <small><i class="fa fa-calendar" aria-hidden="true"></i> 12/11/2016</small></h4>
+						<p class="commenttext">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed et urna a ipsum iaculis placerat. Praesent at velit at libero pharetra fringilla. Duis sed fringilla mauris, sit amet scelerisque tellus. Nam eu sagittis nisi. Aliquam erat volutpat. Nunc eu rutrum tellus. Quisque eget augue iaculis, tempor elit vel, facilisis ex. In in ex magna. Sed imperdiet efficitur lacus non ultricies. Curabitur tincidunt nibh at lorem malesuada, id feugiat velit egestas. Pellentesque facilisis tortor sed mollis hendrerit.</p>
+					</article>
+				</div>
+			</section>
+		</section>
+	</div>
+</body>
+</html>

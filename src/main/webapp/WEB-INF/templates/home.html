@@ -14,7 +14,7 @@
 	<div id="mainContent" class="container-fluid">
 		<h2>City list</h2>
 		<section class="citylist">
-			<article class="city" th:each="city : ${cities}">
+			<article class="citybox" th:each="city : ${cities}">
 				<h3 th:text="${city.name}"></h3>
 				<p th:text="${city.summary}" class="summary"></p>
 				<div class="btn-toolbar actionbar" role="toolbar">
@@ -23,20 +23,14 @@
 							aria-hidden="true"></i> See details</a>
 					</div>
 					<div class="btn-group" role="group">
-						<div class="btn-group" role="group">
-							<button type="button" class="btn btn-success">
-								<i class="fa fa-thumbs-up" aria-hidden="true"></i> 0
-							</button>
-						</div>
-						<div class="btn-group" role="group">
-							<button type="button" class="btn btn-danger">
-								<i class="fa fa-thumbs-down" aria-hidden="true"></i> 0
-							</button>
-						</div>
+						<button type="button" class="btn btn-success">
+							<i class="fa fa-thumbs-up" aria-hidden="true"></i> 0
+						</button>
+						<button type="button" class="btn btn-danger">
+							<i class="fa fa-thumbs-down" aria-hidden="true"></i> 0
+						</button>
 					</div>
 				</div>
-
-
 				<aside class="cityPhoto">
 					<img src="img/city-no-photo.png" alt="Vignette Londres">
 				</aside>
