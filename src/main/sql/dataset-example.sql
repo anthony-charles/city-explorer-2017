@@ -1,0 +1,4 @@
+INSERT INTO `city` (`name`, `summary`) VALUES ('London','Capital of the United Kingdom, London is a leading global city, in the arts, entertainment, fashion and tourism.');
+INSERT INTO `city` (`name`, `summary`) VALUES ('Paris','Paris is called the City of Light, and is much more than just one of the most romantic cities in the world.');
+INSERT INTO `city` (`name`, `summary`) VALUES ('New York','New York, the largest city in the U.S., is an architectural marvel with plenty of historic monuments, magnificent buildings and countless dazzling skyscrapers.');
+INSERT INTO `city` (`name`, `summary`) VALUES ('Los Angeles','The glamour of Hollywood, Beverly Hills, the Sunset Strip, and the famous beaches have added to Los Angeles''s reputation as a California paradise.');

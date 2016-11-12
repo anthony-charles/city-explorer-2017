@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<title>Fragments</title>
+</head>
+<body>
+	<header id="mainHeader" th:fragment="header">
+		<h1>City Explorer</h1>
+		<nav>
+			<ul class="nav nav-stacked">
+				<li><a href="addcity"><i class="fa fa-plus" aria-hidden="true"></i> Add a new city</a></li>
+			</ul>
+		</nav>
+	</header>
+</body>
+</html>

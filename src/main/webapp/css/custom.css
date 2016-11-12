@@ -1,0 +1,80 @@
+body {
+	background-color:#F7F7F7;
+}
+
+#mainHeader {
+	background-color:#D8D1C9;
+	position:fixed;
+	top:0;
+	bottom:0;
+	left:15px;
+	box-shadow: 10px 0px 0px #F7F0E8;
+    color: white;
+    width:150px;
+}
+
+#mainHeader h1 {
+	background-color:#F7F0E8;
+	padding:20px 5px;	
+    color: steelblue;
+    font-weight: bold;
+}
+
+#mainHeader nav a {
+	background-color: #E2DCD7;
+}
+
+#mainHeader nav a:hover {
+	background-color: #F7F0E8;
+}
+
+#mainContent {
+	margin-left:180px;
+}
+
+.citylist {
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.citylist .city {
+	width:400px;
+	height:200px;
+	background-color:white;
+	margin:20px;
+	box-shadow: 0 0 5px grey;
+	position:relative;
+	transition: all .2s ease-in-out;
+	padding:5px 135px 5px 5px;
+}
+
+.citylist .city:hover {
+	transform: scale(1.1);
+}
+
+.citylist .cityPhoto {
+	position:absolute;
+	top:0;
+	right:0;
+}
+
+.citylist .cityPhoto img {
+	width:130px;
+	height:200px;
+}
+
+.citylist .city h3 {
+	background-color:lightgrey;
+	margin:0;
+	padding:5px;
+}
+
+.citylist .city p {
+	margin:10px 0;
+}
+
+.citylist .city .actionbar {
+	position: absolute;
+    bottom: 15px;
+    left: 20px;
+}
