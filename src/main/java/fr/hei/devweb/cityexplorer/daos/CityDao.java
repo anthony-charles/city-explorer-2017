@@ -44,4 +44,15 @@ public class CityDao {
 		}
 		return null;
 	}
+	
+	public void addCity(City newCity) {
+		try (Connection connection = DataSourceProvider.getInstance().getDataSource().getConnection();
+				PreparedStatement statement = connection.prepareStatement("INSERT INTO city(name, summary) VALUES (?, ?)")) {
+			statement.setString(1, newCity.getName());
+			statement.setString(2, newCity.getSummary());
+			statement.executeUpdate();
+		} catch (SQLException e) {
+			throw new CityExplorerRuntimeException("Error when getting cities", e);
+		}
+	}
 }

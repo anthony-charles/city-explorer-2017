@@ -6,6 +6,11 @@ public class City {
 	private String name;
 	private String summary;
 	
+	
+	
+	public City() {
+	}
+
 	public City(Integer id, String name, String summary) {
 		super();
 		this.id = id;

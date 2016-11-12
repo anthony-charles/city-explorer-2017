@@ -30,5 +30,18 @@ public class CityService {
 		}
 		return cityDao.getCity(id);
 	}
+	
+	public void addCity(City newCity) {
+		if(newCity == null){
+			throw new IllegalArgumentException("A city must be provided.");
+		}
+		if(newCity.getName() == null || "".equals(newCity.getName())) {
+			throw new IllegalArgumentException("A city must have a name.");
+		}
+		if(newCity.getSummary() == null || "".equals(newCity.getSummary())) {
+			throw new IllegalArgumentException("A city must have a summary.");
+		}
+		cityDao.addCity(newCity);
+	}
 
 }

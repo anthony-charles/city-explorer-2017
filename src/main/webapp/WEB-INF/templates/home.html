@@ -12,7 +12,6 @@
 	<header th:replace="~{common::header}"></header>
 
 	<div id="mainContent" class="container-fluid">
-		<h2>City list</h2>
 		<section class="citylist">
 			<article class="citybox" th:each="city : ${cities}">
 				<h3 th:text="${city.name}"></h3>

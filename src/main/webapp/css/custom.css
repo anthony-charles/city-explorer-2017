@@ -68,6 +68,7 @@ body {
 
 .citylist .citybox {
 	width:400px;
+	min-width:400px;
 	transition: all .2s ease-in-out;
 }
 
@@ -194,3 +195,18 @@ body {
 #newcomment.opened .btn-close {
 	display:inline;
 }
+
+/* ADD A CITY STYLES */
+.cityadd .citybox {
+	padding:5px;
+	height: inherit;
+}
+
+.cityadd .citybox form {
+	padding:10px;
+}
+
+.cityadd .citybox p.alert {
+	margin:10px 100px;
+}
+

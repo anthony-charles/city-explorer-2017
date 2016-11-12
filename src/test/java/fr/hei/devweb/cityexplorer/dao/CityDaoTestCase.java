@@ -1,5 +1,7 @@
 package fr.hei.devweb.cityexplorer.dao;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.List;
 
@@ -7,6 +9,7 @@ import org.assertj.core.api.Assertions;
 import org.junit.Test;
 
 import fr.hei.devweb.cityexplorer.daos.CityDao;
+import fr.hei.devweb.cityexplorer.daos.DataSourceProvider;
 import fr.hei.devweb.cityexplorer.pojos.City;
 
 public class CityDaoTestCase extends AbstractDaoTestCase {
@@ -34,7 +37,7 @@ public class CityDaoTestCase extends AbstractDaoTestCase {
 	}
 
 	@Test
-	public void shouldGetCities() throws Exception {
+	public void shouldGetCity() throws Exception {
 		// WHEN
 		City city = cityDao.getCity(1);
 		// THEN
@@ -43,5 +46,23 @@ public class CityDaoTestCase extends AbstractDaoTestCase {
 		Assertions.assertThat(city.getName()).isEqualTo("City 1");
 		Assertions.assertThat(city.getSummary()).isEqualTo("Summary 1");
 		
+	}
+	
+	@Test
+	public void shouldAddCity() throws Exception {
+		// GIVEN 
+		City newCity = new City(null, "My new city", "Summary for my new city");
+		// WHEN
+		cityDao.addCity(newCity);
+		// THEN
+		try(Connection connection = DataSourceProvider.getInstance().getDataSource().getConnection();
+				Statement statement = connection.createStatement();
+				ResultSet resultSet = statement.executeQuery("SELECT * FROM city WHERE name='My new city'")){
+			Assertions.assertThat(resultSet.next()).isTrue();
+			Assertions.assertThat(resultSet.getInt("id")).isNotNull();
+			Assertions.assertThat(resultSet.getString("name")).isEqualTo("My new city");
+			Assertions.assertThat(resultSet.getString("summary")).isEqualTo("Summary for my new city");
+			Assertions.assertThat(resultSet.next()).isFalse();
+		}
 	}
 }
