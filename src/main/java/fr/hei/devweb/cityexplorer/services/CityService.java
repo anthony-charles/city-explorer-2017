@@ -44,4 +44,11 @@ public class CityService {
 		cityDao.addCity(newCity);
 	}
 
+	public String getImagePath(Integer id) {
+		if(id == null) {
+			throw new IllegalArgumentException("Id Null");
+		}
+		return cityDao.getImagePath(id);
+	}
+
 }
