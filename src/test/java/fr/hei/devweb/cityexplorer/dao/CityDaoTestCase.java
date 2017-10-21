@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.List;
 
+import fr.hei.devweb.cityexplorer.pojos.Country;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 
@@ -18,9 +19,9 @@ public class CityDaoTestCase extends AbstractDaoTestCase {
 
 	@Override
 	public void insertDataSet(Statement statement) throws Exception {
-		statement.executeUpdate("INSERT INTO city(id, name, summary) VALUES(1, 'City 1', 'Summary 1')");
-		statement.executeUpdate("INSERT INTO city(id, name, summary) VALUES(2, 'City 2', 'Summary 2')");
-		statement.executeUpdate("INSERT INTO city(id, name, summary) VALUES(3, 'City 3', 'Summary 3')");
+		statement.executeUpdate("INSERT INTO city(id, name, summary, country) VALUES(1, 'City 1', 'Summary 1', 'FR')");
+		statement.executeUpdate("INSERT INTO city(id, name, summary, country) VALUES(2, 'City 2', 'Summary 2', 'UK')");
+		statement.executeUpdate("INSERT INTO city(id, name, summary, country) VALUES(3, 'City 3', 'Summary 3', 'FR')");
 	}
 
 	@Test
@@ -29,10 +30,10 @@ public class CityDaoTestCase extends AbstractDaoTestCase {
 		List<City> cities = cityDao.listCities();
 		// THEN
 		Assertions.assertThat(cities).hasSize(3);
-		Assertions.assertThat(cities).extracting("id", "name", "summary").containsOnly(
-				Assertions.tuple(1, "City 1", "Summary 1"),
-				Assertions.tuple(2, "City 2", "Summary 2"),
-				Assertions.tuple(3, "City 3", "Summary 3")
+		Assertions.assertThat(cities).extracting("id", "name", "summary", "country").containsOnly(
+				Assertions.tuple(1, "City 1", "Summary 1", Country.FR),
+				Assertions.tuple(2, "City 2", "Summary 2", Country.UK),
+				Assertions.tuple(3, "City 3", "Summary 3", Country.FR)
 		);
 	}
 
@@ -45,13 +46,14 @@ public class CityDaoTestCase extends AbstractDaoTestCase {
 		Assertions.assertThat(city.getId()).isEqualTo(1);
 		Assertions.assertThat(city.getName()).isEqualTo("City 1");
 		Assertions.assertThat(city.getSummary()).isEqualTo("Summary 1");
+		Assertions.assertThat(city.getCountry()).isEqualTo(Country.FR);
 		
 	}
 	
 	@Test
 	public void shouldAddCity() throws Exception {
 		// GIVEN 
-		City newCity = new City(null, "My new city", "Summary for my new city");
+		City newCity = new City(null, "My new city", "Summary for my new city", Country.UK);
 		// WHEN
 		cityDao.addCity(newCity);
 		// THEN
@@ -62,6 +64,7 @@ public class CityDaoTestCase extends AbstractDaoTestCase {
 			Assertions.assertThat(resultSet.getInt("id")).isNotNull();
 			Assertions.assertThat(resultSet.getString("name")).isEqualTo("My new city");
 			Assertions.assertThat(resultSet.getString("summary")).isEqualTo("Summary for my new city");
+			Assertions.assertThat(resultSet.getString("country")).isEqualTo("UK");
 			Assertions.assertThat(resultSet.next()).isFalse();
 		}
 	}

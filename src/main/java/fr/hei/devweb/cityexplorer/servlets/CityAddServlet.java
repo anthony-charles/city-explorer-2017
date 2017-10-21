@@ -7,6 +7,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import fr.hei.devweb.cityexplorer.pojos.Country;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 
@@ -41,7 +42,7 @@ public class CityAddServlet extends AbstractGenericServlet {
 		String name = req.getParameter("name");
 		String summary = req.getParameter("summary");
 		
-		City newCity = new City(null, name, summary);
+		City newCity = new City(null, name, summary, Country.FR);
 		
 		try {
 			CityService.getInstance().addCity(newCity);

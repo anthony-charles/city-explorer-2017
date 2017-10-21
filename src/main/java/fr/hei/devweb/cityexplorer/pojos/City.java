@@ -5,17 +5,19 @@ public class City {
 	private Integer id;
 	private String name;
 	private String summary;
-	
+	private Country country;
 	
 	
 	public City() {
 	}
 
-	public City(Integer id, String name, String summary) {
+	public City(Integer id, String name, String summary, Country country) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.summary = summary;
+		this.country = country;
+
 	}
 	
 	public Integer getId() {
@@ -36,6 +38,14 @@ public class City {
 	public void setSummary(String summary) {
 		this.summary = summary;
 	}
-	
+
+
+	public Country getCountry() {
+		return country;
+	}
+
+	public void setCountry(Country country) {
+		this.country = country;
+	}
 	
 }
