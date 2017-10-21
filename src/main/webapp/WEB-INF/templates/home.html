@@ -21,6 +21,14 @@
 						<a th:href="'detail?id='+${city.id}" class="btn btn-primary"><i class="fa fa-eye"
 							aria-hidden="true"></i> See details</a>
 					</div>
+					<div class="btn-group" role="group">
+						<a class="btn btn-success">
+							<i class="fa fa-thumbs-up" aria-hidden="true"></i> [[${city.likes}]]
+						</a>
+						<a class="btn btn-danger">
+							<i class="fa fa-thumbs-down" aria-hidden="true"></i> [[${city.dislikes}]]
+						</a>
+					</div>
 				</div>
 				<aside class="cityPhoto">
 					<img src="img/city-no-photo.png" alt="Vignette Londres">
