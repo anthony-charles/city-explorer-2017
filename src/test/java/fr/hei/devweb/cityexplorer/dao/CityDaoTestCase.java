@@ -38,6 +38,18 @@ public class CityDaoTestCase extends AbstractDaoTestCase {
 	}
 
 	@Test
+	public void shouldListCitiesByCountry() throws Exception {
+		// WHEN
+		List<City> cities = cityDao.listCitiesByCountry(Country.FR);
+		// THEN
+		Assertions.assertThat(cities).hasSize(2);
+		Assertions.assertThat(cities).extracting("id", "name", "summary", "country").containsOnly(
+				Assertions.tuple(1, "City 1", "Summary 1", Country.FR),
+				Assertions.tuple(3, "City 3", "Summary 3", Country.FR)
+		);
+	}
+
+	@Test
 	public void shouldGetCity() throws Exception {
 		// WHEN
 		City city = cityDao.getCity(1);

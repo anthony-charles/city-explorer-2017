@@ -12,6 +12,19 @@
 	<header th:replace="~{common::header}"></header>
 
 	<div id="mainContent" class="container-fluid">
+		<section class="cityfilters">
+			<h3>Filters</h3>
+			<form class="form-inline" method="post">
+				<div class="form-group">
+					<label for="countryInput">Country</label>
+					<select class="form-control" id="countryInput" name="country">
+						<option value="">All countries</option>
+						<option th:each="country : ${countries}" th:value="${country.name()}" th:text="${country.label}" th:selected="${countryFilter != null && country.name() == countryFilter.name()}"></option>
+					</select>
+				</div>
+				<input type="submit" class="btn btn-default" value="Filter">
+			</form>
+		</section>
 		<section class="citylist">
 			<article class="citybox" th:each="city : ${cities}">
 				<h3 th:text="${city.name}"></h3>

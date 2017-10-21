@@ -7,6 +7,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import fr.hei.devweb.cityexplorer.pojos.Country;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 
@@ -20,12 +21,29 @@ public class HomeServlet extends AbstractGenericServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		TemplateEngine templateEngine = this.createTemplateEngine(req);
+
+
+		Country countryFilter = (Country) req.getSession().getAttribute("countryFilter");
 		
 		WebContext context = new WebContext(req, resp, getServletContext());
-		context.setVariable("cities", CityService.getInstance().listAllCities());
+		context.setVariable("cities", CityService.getInstance().listAllCities(countryFilter));
+		context.setVariable("countries", Country.values());
+		context.setVariable("countryFilter", countryFilter);
 		
 		templateEngine.process("home", context, resp.getWriter());
 	}
 
-	
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String countryName = req.getParameter("country");
+
+		Country country = null;
+		try {
+			country = Country.valueOf(countryName);
+		} catch (IllegalArgumentException ignored) {}
+
+		req.getSession().setAttribute("countryFilter", country);
+
+		resp.sendRedirect("home");
+	}
 }
