@@ -44,4 +44,12 @@ public class CityService {
 		cityDao.addCity(newCity);
 	}
 
+	public void addLike(Integer cityId) {
+		cityDao.addLike(cityId);
+	}
+
+	public void addDislike(Integer cityId) {
+		cityDao.addDislike(cityId);
+	}
+
 }
