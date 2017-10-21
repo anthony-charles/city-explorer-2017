@@ -3,7 +3,8 @@ package fr.hei.devweb.cityexplorer.pojos;
 public enum Country {
     FR("France"),
     UK("United Kingdom"),
-    USA("United States of America");
+    USA("United States of America"),
+    DE("Germany");
 
     private String label;
 

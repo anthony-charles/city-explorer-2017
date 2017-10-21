@@ -24,6 +24,7 @@ public class CityAddServlet extends AbstractGenericServlet {
 		TemplateEngine templateEngine = this.createTemplateEngine(req);
 		
 		WebContext context = new WebContext(req, resp, getServletContext());
+		context.setVariable("countries", Country.values());
 		if(req.getSession().getAttribute("cityCreationError") != null) {
 			context.setVariable("errorMessage", req.getSession().getAttribute("cityCreationError"));
 			context.setVariable("city", (City) req.getSession().getAttribute("cityCreationData"));
@@ -41,8 +42,9 @@ public class CityAddServlet extends AbstractGenericServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String name = req.getParameter("name");
 		String summary = req.getParameter("summary");
+		String country = req.getParameter("country");
 		
-		City newCity = new City(null, name, summary, Country.FR);
+		City newCity = new City(null, name, summary, Country.valueOf(country));
 		
 		try {
 			CityService.getInstance().addCity(newCity);
