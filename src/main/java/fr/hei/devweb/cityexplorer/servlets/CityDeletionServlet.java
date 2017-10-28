@@ -22,7 +22,7 @@ public class CityDeletionServlet extends AbstractGenericServlet {
             resp.sendRedirect("home");
             return;
         }
-        
+
         TemplateEngine templateEngine = this.createTemplateEngine(req);
         WebContext context = new WebContext(req, resp, req.getServletContext());
         context.setVariable("city", CityService.getInstance().getCity(cityId));

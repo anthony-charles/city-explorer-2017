@@ -29,11 +29,10 @@ public class CityDaoTestCase extends AbstractDaoTestCase {
 		// WHEN
 		List<City> cities = cityDao.listCities();
 		// THEN
-		Assertions.assertThat(cities).hasSize(3);
+		Assertions.assertThat(cities).hasSize(2);
 		Assertions.assertThat(cities).extracting("id", "name", "summary").containsOnly(
 				Assertions.tuple(1, "City 1", "Summary 1"),
-				Assertions.tuple(2, "City 2", "Summary 2"),
-				Assertions.tuple(3, "City 3", "Summary 3")
+				Assertions.tuple(2, "City 2", "Summary 2")
 		);
 	}
 
@@ -46,7 +45,14 @@ public class CityDaoTestCase extends AbstractDaoTestCase {
 		Assertions.assertThat(city.getId()).isEqualTo(1);
 		Assertions.assertThat(city.getName()).isEqualTo("City 1");
 		Assertions.assertThat(city.getSummary()).isEqualTo("Summary 1");
-		
+	}
+
+	@Test
+	public void shouldNotGetDeletedCity() {
+		// WHEN
+		City city = cityDao.getCity(3);
+		// THEN
+		Assertions.assertThat(city).isNull();
 	}
 	
 	@Test
