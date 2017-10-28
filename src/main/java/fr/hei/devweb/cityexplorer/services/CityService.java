@@ -3,11 +3,14 @@ package fr.hei.devweb.cityexplorer.services;
 import java.util.List;
 
 import fr.hei.devweb.cityexplorer.daos.CityDao;
+import fr.hei.devweb.cityexplorer.daos.CommentDao;
 import fr.hei.devweb.cityexplorer.pojos.City;
+import fr.hei.devweb.cityexplorer.pojos.Comment;
 
 public class CityService {
 	
 	private CityDao cityDao = new CityDao();
+	private CommentDao commentDao = new CommentDao();
 	
 	private static class CityServiceHolder {
 		private static CityService instance = new CityService();
@@ -42,6 +45,10 @@ public class CityService {
 			throw new IllegalArgumentException("A city must have a summary.");
 		}
 		cityDao.addCity(newCity);
+	}
+
+	public void addComment(Comment newComment, Integer cityId) {
+		commentDao.addComment(newComment,cityId);
 	}
 
 }
