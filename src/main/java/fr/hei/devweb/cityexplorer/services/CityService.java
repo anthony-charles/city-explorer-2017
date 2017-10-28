@@ -47,6 +47,10 @@ public class CityService {
 		cityDao.addCity(newCity);
 	}
 
+	public List<Comment> listCommentsByCity(Integer cityId) {
+		return commentDao.listCommentsByCity(cityId);
+	}
+
 	public void addComment(Comment newComment, Integer cityId) {
 		commentDao.addComment(newComment,cityId);
 	}

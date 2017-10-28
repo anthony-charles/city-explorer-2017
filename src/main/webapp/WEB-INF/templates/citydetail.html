@@ -67,13 +67,9 @@
 							</div>
 						</form>
 					</article>
-					<article class="commentbox">
-						<h4>Jean123 <small><i class="fa fa-calendar" aria-hidden="true"></i> 12/11/2016</small></h4>
-						<p class="commenttext">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-					</article>
-					<article class="commentbox">
-						<h4>Jean123 <small><i class="fa fa-calendar" aria-hidden="true"></i> 12/11/2016</small></h4>
-						<p class="commenttext">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+					<article class="commentbox" th:each="comment : ${comments}">
+						<h4>[[${comment.pseudo}]] <small><i class="fa fa-calendar" aria-hidden="true"></i> [[${#temporals.format(comment.creationDate, 'dd/MM/yyyy HH:mm')}]]</small></h4>
+						<p class="commenttext" th:text="${comment.message}">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
 					</article>
 				</div>
 			</section>

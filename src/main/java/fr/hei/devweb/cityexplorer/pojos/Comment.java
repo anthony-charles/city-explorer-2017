@@ -1,15 +1,16 @@
 package fr.hei.devweb.cityexplorer.pojos;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class Comment {
 
     private Integer id;
     private String pseudo;
-    private LocalDate creationDate;
+    private LocalDateTime creationDate;
     private String message;
 
-    public Comment(Integer id, String pseudo, LocalDate creationDate, String message) {
+    public Comment(Integer id, String pseudo, LocalDateTime creationDate, String message) {
         this.id = id;
         this.pseudo = pseudo;
         this.creationDate = creationDate;
@@ -32,11 +33,11 @@ public class Comment {
         this.pseudo = pseudo;
     }
 
-    public LocalDate getCreationDate() {
+    public LocalDateTime getCreationDate() {
         return creationDate;
     }
 
-    public void setCreationDate(LocalDate creationDate) {
+    public void setCreationDate(LocalDateTime creationDate) {
         this.creationDate = creationDate;
     }
 

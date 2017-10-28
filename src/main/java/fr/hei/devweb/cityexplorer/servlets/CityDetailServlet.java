@@ -2,12 +2,14 @@ package fr.hei.devweb.cityexplorer.servlets;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import fr.hei.devweb.cityexplorer.pojos.City;
 import fr.hei.devweb.cityexplorer.pojos.Comment;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
@@ -27,6 +29,7 @@ public class CityDetailServlet extends AbstractGenericServlet {
 		
 		Integer idCity = Integer.parseInt(req.getParameter("id"));
 		context.setVariable("city", CityService.getInstance().getCity(idCity));
+		context.setVariable("comments", CityService.getInstance().listCommentsByCity(idCity));
 		
 		templateEngine.process("citydetail", context, resp.getWriter());
 	}
@@ -38,7 +41,7 @@ public class CityDetailServlet extends AbstractGenericServlet {
 
 		Integer idCity = Integer.parseInt(req.getParameter("id"));
 
-		Comment newComment = new Comment(null, pseudo, LocalDate.now(), message);
+		Comment newComment = new Comment(null, pseudo, LocalDateTime.now(), message);
 
 		CityService.getInstance().addComment(newComment, idCity);
 
