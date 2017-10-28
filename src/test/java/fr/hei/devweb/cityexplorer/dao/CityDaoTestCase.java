@@ -2,6 +2,7 @@ package fr.hei.devweb.cityexplorer.dao;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 
@@ -18,9 +19,9 @@ public class CityDaoTestCase extends AbstractDaoTestCase {
 
 	@Override
 	public void insertDataSet(Statement statement) throws Exception {
-		statement.executeUpdate("INSERT INTO city(id, name, summary) VALUES(1, 'City 1', 'Summary 1')");
-		statement.executeUpdate("INSERT INTO city(id, name, summary) VALUES(2, 'City 2', 'Summary 2')");
-		statement.executeUpdate("INSERT INTO city(id, name, summary) VALUES(3, 'City 3', 'Summary 3')");
+		statement.executeUpdate("INSERT INTO city(id, name, summary, deleted) VALUES(1, 'City 1', 'Summary 1', 0)");
+		statement.executeUpdate("INSERT INTO city(id, name, summary, deleted) VALUES(2, 'City 2', 'Summary 2', 0)");
+		statement.executeUpdate("INSERT INTO city(id, name, summary, deleted) VALUES(3, 'City 3', 'Summary 3', 1)");
 	}
 
 	@Test
@@ -62,6 +63,20 @@ public class CityDaoTestCase extends AbstractDaoTestCase {
 			Assertions.assertThat(resultSet.getInt("id")).isNotNull();
 			Assertions.assertThat(resultSet.getString("name")).isEqualTo("My new city");
 			Assertions.assertThat(resultSet.getString("summary")).isEqualTo("Summary for my new city");
+			Assertions.assertThat(resultSet.next()).isFalse();
+		}
+	}
+
+	@Test
+	public void shouldDeleteCity() throws SQLException {
+		// WHEN
+		cityDao.deleteCity(2);
+		// THEN
+		try(Connection connection = DataSourceProvider.getInstance().getDataSource().getConnection();
+			Statement statement = connection.createStatement();
+			ResultSet resultSet = statement.executeQuery("SELECT * FROM city WHERE id=2")){
+			Assertions.assertThat(resultSet.next()).isTrue();
+			Assertions.assertThat(resultSet.getBoolean("deleted")).isTrue();
 			Assertions.assertThat(resultSet.next()).isFalse();
 		}
 	}

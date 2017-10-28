@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<title>City Explorer</title>
+<link rel="stylesheet" href="bootstrap/bootstrap.min.css">
+<link rel="stylesheet" href="fontawesome/css/font-awesome.min.css">
+<link rel="stylesheet" href="css/custom.css">
+
+</head>
+<body>
+	<header th:replace="~{common::header}"></header>
+
+	<div id="mainContent" class="container-fluid">
+		<section class="citydetail">
+			<section class="citybox">
+				<h3>Are you sure?</h3>
+				<p>Are you sure you want to delete the city of <strong th:text="${city.name}">city name</strong>?</p>
+				<p><a th:href="'delete?confirm=true&id='+${city.id}" class="btn btn-danger">Yes I am sure</a> <a href="home" class="btn btn-default">No I'm not</a></p>
+			</section>
+		</section>
+	</div>
+</body>
+</html>

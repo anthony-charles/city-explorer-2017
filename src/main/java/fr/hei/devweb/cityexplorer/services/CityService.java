@@ -44,4 +44,8 @@ public class CityService {
 		cityDao.addCity(newCity);
 	}
 
+	public void deleteCity(Integer cityId) {
+		cityDao.deleteCity(cityId);
+	}
+
 }

@@ -55,4 +55,15 @@ public class CityDao {
 			throw new CityExplorerRuntimeException("Error when getting cities", e);
 		}
 	}
+
+	public void deleteCity(Integer cityId) {
+		String query = "UPDATE city SET deleted=true WHERE id=?";
+		try (Connection connection = DataSourceProvider.getInstance().getDataSource().getConnection();
+			 PreparedStatement statement = connection.prepareStatement(query)) {
+			statement.setInt(1, cityId);
+			statement.executeUpdate();
+		} catch (SQLException e) {
+			throw new CityExplorerRuntimeException("Error when getting cities", e);
+		}
+	}
 }
