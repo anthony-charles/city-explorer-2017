@@ -50,7 +50,9 @@ public class CityDao {
                                     resultSet.getInt("id"),
                                     resultSet.getString("name"),
                                     resultSet.getString("summary"),
-                                    Country.valueOf(resultSet.getString("country"))
+                                    Country.valueOf(resultSet.getString("country")),
+                                    resultSet.getInt("likes"),
+                                    resultSet.getInt("dislikes")
                             ));
                 }
             }
