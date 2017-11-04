@@ -1,10 +1,13 @@
 package fr.hei.devweb.cityexplorer.daos;
 
+import java.nio.file.Path;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.SQLType;
 import java.sql.Statement;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,11 +48,16 @@ public class CityDao {
 		return null;
 	}
 	
-	public void addCity(City newCity) {
+	public void addCity(City newCity, Path picturePath) {
 		try (Connection connection = DataSourceProvider.getInstance().getDataSource().getConnection();
-				PreparedStatement statement = connection.prepareStatement("INSERT INTO city(name, summary) VALUES (?, ?)")) {
+				PreparedStatement statement = connection.prepareStatement("INSERT INTO city(name, summary, picture) VALUES (?, ?, ?)")) {
 			statement.setString(1, newCity.getName());
 			statement.setString(2, newCity.getSummary());
+			if (picturePath != null) {
+				statement.setString(3, picturePath.toString());
+			} else {
+				statement.setNull(3, Types.VARCHAR);
+			}
 			statement.executeUpdate();
 		} catch (SQLException e) {
 			throw new CityExplorerRuntimeException("Error when getting cities", e);

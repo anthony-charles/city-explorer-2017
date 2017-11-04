@@ -1,5 +1,6 @@
 package fr.hei.devweb.cityexplorer.dao;
 
+import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -53,7 +54,7 @@ public class CityDaoTestCase extends AbstractDaoTestCase {
 		// GIVEN 
 		City newCity = new City(null, "My new city", "Summary for my new city");
 		// WHEN
-		cityDao.addCity(newCity);
+		cityDao.addCity(newCity, Paths.get("C:/test/to/image.jpg"));
 		// THEN
 		try(Connection connection = DataSourceProvider.getInstance().getDataSource().getConnection();
 				Statement statement = connection.createStatement();
@@ -62,6 +63,26 @@ public class CityDaoTestCase extends AbstractDaoTestCase {
 			Assertions.assertThat(resultSet.getInt("id")).isNotNull();
 			Assertions.assertThat(resultSet.getString("name")).isEqualTo("My new city");
 			Assertions.assertThat(resultSet.getString("summary")).isEqualTo("Summary for my new city");
+			Assertions.assertThat(resultSet.getString("picture")).isEqualTo("C:\\test\\to\\image.jpg");
+			Assertions.assertThat(resultSet.next()).isFalse();
+		}
+	}
+
+	@Test
+	public void shouldAddCityWithNoPicture() throws Exception {
+		// GIVEN
+		City newCity = new City(null, "My new city", "Summary for my new city");
+		// WHEN
+		cityDao.addCity(newCity, null);
+		// THEN
+		try(Connection connection = DataSourceProvider.getInstance().getDataSource().getConnection();
+				Statement statement = connection.createStatement();
+				ResultSet resultSet = statement.executeQuery("SELECT * FROM city WHERE name='My new city'")){
+			Assertions.assertThat(resultSet.next()).isTrue();
+			Assertions.assertThat(resultSet.getInt("id")).isNotNull();
+			Assertions.assertThat(resultSet.getString("name")).isEqualTo("My new city");
+			Assertions.assertThat(resultSet.getString("summary")).isEqualTo("Summary for my new city");
+			Assertions.assertThat(resultSet.getString("picture")).isNull();
 			Assertions.assertThat(resultSet.next()).isFalse();
 		}
 	}
