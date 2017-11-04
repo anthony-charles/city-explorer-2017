@@ -1,5 +1,6 @@
 package fr.hei.devweb.cityexplorer.dao;
 
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -19,9 +20,9 @@ public class CityDaoTestCase extends AbstractDaoTestCase {
 
 	@Override
 	public void insertDataSet(Statement statement) throws Exception {
-		statement.executeUpdate("INSERT INTO city(id, name, summary) VALUES(1, 'City 1', 'Summary 1')");
-		statement.executeUpdate("INSERT INTO city(id, name, summary) VALUES(2, 'City 2', 'Summary 2')");
-		statement.executeUpdate("INSERT INTO city(id, name, summary) VALUES(3, 'City 3', 'Summary 3')");
+		statement.executeUpdate("INSERT INTO city(id, name, summary, picture) VALUES(1, 'City 1', 'Summary 1', null)");
+		statement.executeUpdate("INSERT INTO city(id, name, summary, picture) VALUES(2, 'City 2', 'Summary 2', 'c:/path/to/image.jpg')");
+		statement.executeUpdate("INSERT INTO city(id, name, summary, picture) VALUES(3, 'City 3', 'Summary 3', null)");
 	}
 
 	@Test
@@ -48,6 +49,24 @@ public class CityDaoTestCase extends AbstractDaoTestCase {
 		Assertions.assertThat(city.getSummary()).isEqualTo("Summary 1");
 		
 	}
+
+	@Test
+	public void shouldGetPicturePath() {
+		// WHEN
+		Path picturePath = cityDao.getPicturePath(2);
+		// THEN
+		Assertions.assertThat(picturePath).isNotNull();
+		Assertions.assertThat(picturePath).isEqualTo(Paths.get("c:/path/to/image.jpg"));
+	}
+
+	@Test
+	public void shouldNotGetPicturePathIfNonExistant() {
+		// WHEN
+		Path picturePath = cityDao.getPicturePath(1);
+		// THEN
+		Assertions.assertThat(picturePath).isNull();
+	}
+
 	
 	@Test
 	public void shouldAddCity() throws Exception {

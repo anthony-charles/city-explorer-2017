@@ -1,6 +1,7 @@
 package fr.hei.devweb.cityexplorer.daos;
 
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -44,6 +45,24 @@ public class CityDao {
 			}
 		} catch (SQLException e) {
 			throw new CityExplorerRuntimeException("Error when getting cities", e);
+		}
+		return null;
+	}
+
+	public Path getPicturePath(Integer cityId) {
+		try (Connection connection = DataSourceProvider.getInstance().getDataSource().getConnection();
+			 PreparedStatement statement = connection.prepareStatement("SELECT picture FROM city WHERE id = ?")) {
+			statement.setInt(1, cityId);
+			try (ResultSet resultSet = statement.executeQuery()) {
+				if (resultSet.next()) {
+					String picturePath = resultSet.getString("picture");
+					if (picturePath != null) {
+						return Paths.get(picturePath);
+					}
+				}
+			}
+		} catch (SQLException e) {
+			throw new CityExplorerRuntimeException("Error when getting picture path", e);
 		}
 		return null;
 	}
