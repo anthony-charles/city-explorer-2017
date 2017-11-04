@@ -26,7 +26,9 @@ public class CityDao {
                                 resultSet.getInt("id"),
                                 resultSet.getString("name"),
                                 resultSet.getString("summary"),
-                                Country.valueOf(resultSet.getString("country"))
+                                Country.valueOf(resultSet.getString("country")),
+				resultSet.getInt("likes"),
+				resultSet.getInt("dislikes")
                         ));
             }
         } catch (SQLException e) {
@@ -69,7 +71,9 @@ public class CityDao {
                             resultSet.getInt("id"),
                             resultSet.getString("name"),
                             resultSet.getString("summary"),
-                            Country.valueOf(resultSet.getString("country")));
+                            Country.valueOf(resultSet.getString("country")),
+							resultSet.getInt("likes"),
+							resultSet.getInt("dislikes"));
                 }
             }
         } catch (SQLException e) {
@@ -80,10 +84,32 @@ public class CityDao {
 
     public void addCity(City newCity) {
         try (Connection connection = DataSourceProvider.getInstance().getDataSource().getConnection();
-             PreparedStatement statement = connection.prepareStatement("INSERT INTO city(name, summary, country) VALUES (?, ?, ?)")) {
+             PreparedStatement statement = connection.prepareStatement("INSERT INTO city(name, summary, country, likes, dislikes) VALUES (?, ?, ?, ?, ?)")) {
             statement.setString(1, newCity.getName());
             statement.setString(2, newCity.getSummary());
             statement.setString(3, newCity.getCountry().name());
+			statement.setInt(4, newCity.getLikes());
+			statement.setInt(5, newCity.getDislikes());
+			statement.executeUpdate();
+		} catch (SQLException e) {
+			throw new CityExplorerRuntimeException("Error when getting cities", e);
+		}
+	}
+
+	public void addLike(Integer cityId) {
+		try (Connection connection = DataSourceProvider.getInstance().getDataSource().getConnection();
+			 PreparedStatement statement = connection.prepareStatement("UPDATE city SET likes = likes + 1 WHERE id = ?")) {
+			statement.setInt(1, cityId);
+			statement.executeUpdate();
+		} catch (SQLException e) {
+			throw new CityExplorerRuntimeException("Error when getting cities", e);
+		}
+	}
+
+	public void addDislike(Integer cityId) {
+		try (Connection connection = DataSourceProvider.getInstance().getDataSource().getConnection();
+			 PreparedStatement statement = connection.prepareStatement("UPDATE city SET dislikes = dislikes + 1 WHERE id = ?")) {
+			statement.setInt(1, cityId);
             statement.executeUpdate();
         } catch (SQLException e) {
             throw new CityExplorerRuntimeException("Error when getting cities", e);

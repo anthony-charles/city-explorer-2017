@@ -44,7 +44,7 @@ public class CityAddServlet extends AbstractGenericServlet {
 		String summary = req.getParameter("summary");
 		String country = req.getParameter("country");
 		
-		City newCity = new City(null, name, summary, Country.valueOf(country));
+		City newCity = new City(null, name, summary, Country.valueOf(country), 0, 0);
 		
 		try {
 			CityService.getInstance().addCity(newCity);
