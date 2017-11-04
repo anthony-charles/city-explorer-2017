@@ -45,7 +45,7 @@ public class CityDao {
     public List<City> listCitiesByCountry(Country country) {
         List<City> cities = new ArrayList<>();
         try (Connection connection = DataSourceProvider.getInstance().getDataSource().getConnection();
-             PreparedStatement statement = connection.prepareStatement("SELECT * FROM city WHERE country = ? ORDER BY name")) {
+             PreparedStatement statement = connection.prepareStatement("SELECT * FROM city WHERE country = ? AND deleted=false ORDER BY name")) {
             statement.setString(1, country.name());
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
@@ -90,7 +90,7 @@ public class CityDao {
     
     public Path getPicturePath(Integer cityId) {
 		try (Connection connection = DataSourceProvider.getInstance().getDataSource().getConnection();
-			 PreparedStatement statement = connection.prepareStatement("SELECT picture FROM city WHERE id = ?")) {
+			 PreparedStatement statement = connection.prepareStatement("SELECT picture FROM city WHERE id = ? AND deleted=false")) {
 			statement.setInt(1, cityId);
 			try (ResultSet resultSet = statement.executeQuery()) {
 				if (resultSet.next()) {
@@ -127,7 +127,7 @@ public class CityDao {
 
 	public void addLike(Integer cityId) {
 		try (Connection connection = DataSourceProvider.getInstance().getDataSource().getConnection();
-			 PreparedStatement statement = connection.prepareStatement("UPDATE city SET likes = likes + 1 WHERE id = ?")) {
+			 PreparedStatement statement = connection.prepareStatement("UPDATE city SET likes = likes + 1 WHERE id = ? AND deleted=false")) {
 			statement.setInt(1, cityId);
 			statement.executeUpdate();
 		} catch (SQLException e) {
@@ -137,7 +137,7 @@ public class CityDao {
 
 	public void addDislike(Integer cityId) {
 		try (Connection connection = DataSourceProvider.getInstance().getDataSource().getConnection();
-			 PreparedStatement statement = connection.prepareStatement("UPDATE city SET dislikes = dislikes + 1 WHERE id = ?")) {
+			 PreparedStatement statement = connection.prepareStatement("UPDATE city SET dislikes = dislikes + 1 WHERE id = ? AND deleted=false")) {
 			statement.setInt(1, cityId);
             statement.executeUpdate();
         } catch (SQLException e) {

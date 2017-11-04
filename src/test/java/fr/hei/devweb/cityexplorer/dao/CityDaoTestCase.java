@@ -44,10 +44,9 @@ public class CityDaoTestCase extends AbstractDaoTestCase {
 		// WHEN
 		List<City> cities = cityDao.listCitiesByCountry(Country.FR);
 		// THEN
-		Assertions.assertThat(cities).hasSize(2);
+		Assertions.assertThat(cities).hasSize(1);
 		Assertions.assertThat(cities).extracting("id", "name", "summary", "country").containsOnly(
-				Assertions.tuple(1, "City 1", "Summary 1", Country.FR),
-				Assertions.tuple(3, "City 3", "Summary 3", Country.FR)
+				Assertions.tuple(1, "City 1", "Summary 1", Country.FR)
 		);
 	}
 
