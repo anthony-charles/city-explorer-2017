@@ -1,10 +1,14 @@
 package fr.hei.devweb.cityexplorer.daos;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.SQLType;
 import java.sql.Statement;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -83,15 +87,38 @@ public class CityDao {
         }
         return null;
     }
+    
+    public Path getPicturePath(Integer cityId) {
+		try (Connection connection = DataSourceProvider.getInstance().getDataSource().getConnection();
+			 PreparedStatement statement = connection.prepareStatement("SELECT picture FROM city WHERE id = ?")) {
+			statement.setInt(1, cityId);
+			try (ResultSet resultSet = statement.executeQuery()) {
+				if (resultSet.next()) {
+					String picturePath = resultSet.getString("picture");
+					if (picturePath != null) {
+						return Paths.get(picturePath);
+					}
+				}
+			}
+		} catch (SQLException e) {
+			throw new CityExplorerRuntimeException("Error when getting picture path", e);
+		}
+		return null;
+	}
 
-    public void addCity(City newCity) {
+    public void addCity(City newCity, Path picturePath) {
         try (Connection connection = DataSourceProvider.getInstance().getDataSource().getConnection();
-             PreparedStatement statement = connection.prepareStatement("INSERT INTO city(name, summary, country, likes, dislikes) VALUES (?, ?, ?, ?, ?)")) {
+             PreparedStatement statement = connection.prepareStatement("INSERT INTO city(name, summary, country, likes, dislikes, picture) VALUES (?, ?, ?, ?, ?, ?)")) {
             statement.setString(1, newCity.getName());
             statement.setString(2, newCity.getSummary());
             statement.setString(3, newCity.getCountry().name());
 			statement.setInt(4, newCity.getLikes());
 			statement.setInt(5, newCity.getDislikes());
+			if (picturePath != null) {
+				statement.setString(6, picturePath.toString());
+			} else {
+				statement.setNull(6, Types.VARCHAR);
+			}
 			statement.executeUpdate();
 		} catch (SQLException e) {
 			throw new CityExplorerRuntimeException("Error when getting cities", e);

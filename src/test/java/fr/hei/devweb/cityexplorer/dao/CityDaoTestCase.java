@@ -1,5 +1,7 @@
 package fr.hei.devweb.cityexplorer.dao;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -20,9 +22,9 @@ public class CityDaoTestCase extends AbstractDaoTestCase {
 
 	@Override
 	public void insertDataSet(Statement statement) throws Exception {
-		statement.executeUpdate("INSERT INTO city(id, name, summary, country, likes, dislikes, deleted) VALUES(1, 'City 1', 'Summary 1', 'FR', 1, 2, 0)");
-		statement.executeUpdate("INSERT INTO city(id, name, summary, country, likes, dislikes, deleted) VALUES(2, 'City 2', 'Summary 2', 'UK', 3, 4, 0)");
-		statement.executeUpdate("INSERT INTO city(id, name, summary, country, likes, dislikes, deleted) VALUES(3, 'City 3', 'Summary 3', 'FR', 5, 6, 1)");
+		statement.executeUpdate("INSERT INTO city(id, name, summary, country, likes, dislikes, deleted, picture) VALUES(1, 'City 1', 'Summary 1', 'FR', 1, 2, 0, null)");
+		statement.executeUpdate("INSERT INTO city(id, name, summary, country, likes, dislikes, deleted, picture) VALUES(2, 'City 2', 'Summary 2', 'UK', 3, 4, 0, 'c:/path/to/image.jpg')");
+		statement.executeUpdate("INSERT INTO city(id, name, summary, country, likes, dislikes, deleted, picture) VALUES(3, 'City 3', 'Summary 3', 'FR', 5, 6, 1, null)");
 	}
 
 	@Test
@@ -70,13 +72,31 @@ public class CityDaoTestCase extends AbstractDaoTestCase {
 		// THEN
 		Assertions.assertThat(city).isNull();
 	}
+
+	@Test
+	public void shouldGetPicturePath() {
+		// WHEN
+		Path picturePath = cityDao.getPicturePath(2);
+		// THEN
+		Assertions.assertThat(picturePath).isNotNull();
+		Assertions.assertThat(picturePath).isEqualTo(Paths.get("c:/path/to/image.jpg"));
+	}
+
+	@Test
+	public void shouldNotGetPicturePathIfNonExistant() {
+		// WHEN
+		Path picturePath = cityDao.getPicturePath(1);
+		// THEN
+		Assertions.assertThat(picturePath).isNull();
+	}
+
 	
 	@Test
 	public void shouldAddCity() throws Exception {
 		// GIVEN 
 		City newCity = new City(null, "My new city", "Summary for my new city", Country.UK, 12, 34);
 		// WHEN
-		cityDao.addCity(newCity);
+		cityDao.addCity(newCity, Paths.get("C:/test/to/image.jpg"));
 		// THEN
 		try(Connection connection = DataSourceProvider.getInstance().getDataSource().getConnection();
 				Statement statement = connection.createStatement();
@@ -86,6 +106,29 @@ public class CityDaoTestCase extends AbstractDaoTestCase {
 			Assertions.assertThat(resultSet.getString("name")).isEqualTo("My new city");
 			Assertions.assertThat(resultSet.getString("summary")).isEqualTo("Summary for my new city");
 			Assertions.assertThat(resultSet.getString("country")).isEqualTo("UK");
+			Assertions.assertThat(resultSet.getInt("likes")).isEqualTo(12);
+			Assertions.assertThat(resultSet.getInt("dislikes")).isEqualTo(34);
+			Assertions.assertThat(resultSet.getString("picture")).isEqualTo("C:\\test\\to\\image.jpg");
+			Assertions.assertThat(resultSet.next()).isFalse();
+		}
+	}
+
+	@Test
+	public void shouldAddCityWithNoPicture() throws Exception {
+		// GIVEN
+		City newCity = new City(null, "My new city", "Summary for my new city", Country.UK, 12, 34);
+		// WHEN
+		cityDao.addCity(newCity, null);
+		// THEN
+		try(Connection connection = DataSourceProvider.getInstance().getDataSource().getConnection();
+				Statement statement = connection.createStatement();
+				ResultSet resultSet = statement.executeQuery("SELECT * FROM city WHERE name='My new city'")){
+			Assertions.assertThat(resultSet.next()).isTrue();
+			Assertions.assertThat(resultSet.getInt("id")).isNotNull();
+			Assertions.assertThat(resultSet.getString("name")).isEqualTo("My new city");
+			Assertions.assertThat(resultSet.getString("summary")).isEqualTo("Summary for my new city");
+			Assertions.assertThat(resultSet.getString("country")).isEqualTo("UK");
+			Assertions.assertThat(resultSet.getString("picture")).isNull();
 			Assertions.assertThat(resultSet.getInt("likes")).isEqualTo(12);
 			Assertions.assertThat(resultSet.getInt("dislikes")).isEqualTo(34);
 			Assertions.assertThat(resultSet.next()).isFalse();
