@@ -23,12 +23,19 @@ public class CityDetailServlet extends AbstractGenericServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+		
+		Integer idCity = Integer.parseInt(req.getParameter("id"));
+		City city = CityService.getInstance().getCity(idCity);
+		if (city == null) {
+			resp.sendRedirect("home");
+			return;
+		}
+
 		TemplateEngine templateEngine = this.createTemplateEngine(req);
 
 		WebContext context = new WebContext(req, resp, getServletContext());
-		
-		Integer idCity = Integer.parseInt(req.getParameter("id"));
-		context.setVariable("city", CityService.getInstance().getCity(idCity));
+		context.setVariable("city", city);
 		context.setVariable("comments", CityService.getInstance().listCommentsByCity(idCity));
 		
 		templateEngine.process("citydetail", context, resp.getWriter());

@@ -20,9 +20,9 @@ public class CityDaoTestCase extends AbstractDaoTestCase {
 
 	@Override
 	public void insertDataSet(Statement statement) throws Exception {
-		statement.executeUpdate("INSERT INTO city(id, name, summary, country, likes, dislikes) VALUES(1, 'City 1', 'Summary 1', 'FR', 1, 2)");
-		statement.executeUpdate("INSERT INTO city(id, name, summary, country, likes, dislikes) VALUES(2, 'City 2', 'Summary 2', 'UK', 3, 4)");
-		statement.executeUpdate("INSERT INTO city(id, name, summary, country, likes, dislikes) VALUES(3, 'City 3', 'Summary 3', 'FR', 5, 6)");
+		statement.executeUpdate("INSERT INTO city(id, name, summary, country, likes, dislikes, deleted) VALUES(1, 'City 1', 'Summary 1', 'FR', 1, 2, 0)");
+		statement.executeUpdate("INSERT INTO city(id, name, summary, country, likes, dislikes, deleted) VALUES(2, 'City 2', 'Summary 2', 'UK', 3, 4, 0)");
+		statement.executeUpdate("INSERT INTO city(id, name, summary, country, likes, dislikes, deleted) VALUES(3, 'City 3', 'Summary 3', 'FR', 5, 6, 1)");
 	}
 
 	@Test
@@ -30,11 +30,10 @@ public class CityDaoTestCase extends AbstractDaoTestCase {
 		// WHEN
 		List<City> cities = cityDao.listCities();
 		// THEN
-		Assertions.assertThat(cities).hasSize(3);
+		Assertions.assertThat(cities).hasSize(2);
 		Assertions.assertThat(cities).extracting("id", "name", "summary", "country", "likes", "dislikes").containsOnly(
 				Assertions.tuple(1, "City 1", "Summary 1", Country.FR, 1, 2),
-				Assertions.tuple(2, "City 2", "Summary 2", Country.UK, 3, 4),
-				Assertions.tuple(3, "City 3", "Summary 3", Country.FR, 5, 6)
+				Assertions.tuple(2, "City 2", "Summary 2", Country.UK, 3, 4)
 		);
 	}
 
@@ -62,7 +61,14 @@ public class CityDaoTestCase extends AbstractDaoTestCase {
 		Assertions.assertThat(city.getCountry()).isEqualTo(Country.FR);
 		Assertions.assertThat(city.getLikes()).isEqualTo(1);
 		Assertions.assertThat(city.getDislikes()).isEqualTo(2);
+	}
 
+	@Test
+	public void shouldNotGetDeletedCity() {
+		// WHEN
+		City city = cityDao.getCity(3);
+		// THEN
+		Assertions.assertThat(city).isNull();
 	}
 	
 	@Test
@@ -118,6 +124,20 @@ public class CityDaoTestCase extends AbstractDaoTestCase {
 			Assertions.assertThat(resultSet.getString("summary")).isEqualTo("Summary 2");
 			Assertions.assertThat(resultSet.getInt("likes")).isEqualTo(3);
 			Assertions.assertThat(resultSet.getInt("dislikes")).isEqualTo(5);
+			Assertions.assertThat(resultSet.next()).isFalse();
+		}
+	}
+	
+	@Test
+	public void shouldDeleteCity() throws SQLException {
+		// WHEN
+		cityDao.deleteCity(2);
+		// THEN
+		try(Connection connection = DataSourceProvider.getInstance().getDataSource().getConnection();
+			Statement statement = connection.createStatement();
+			ResultSet resultSet = statement.executeQuery("SELECT * FROM city WHERE id=2")){
+			Assertions.assertThat(resultSet.next()).isTrue();
+			Assertions.assertThat(resultSet.getBoolean("deleted")).isTrue();
 			Assertions.assertThat(resultSet.next()).isFalse();
 		}
 	}

@@ -27,7 +27,13 @@
 		</section>
 		<section class="citylist">
 			<article class="citybox" th:each="city : ${cities}">
-				<h3 th:text="${city.name}"></h3>
+				<h3>
+					[[${city.name}]]
+					<a th:href="'delete?id='+${city.id}" class="btn btn-xs btn-danger pull-right">
+						<i class="fa fa-times" aria-hidden="true"></i>
+					</a>
+				</h3>
+
 				<p th:text="${city.summary}" class="summary"></p>
 				<div class="btn-toolbar actionbar" role="toolbar">
 					<div class="btn-group" role="group">

@@ -69,4 +69,8 @@ public class CityService {
 		commentDao.addComment(newComment,cityId);
 	}
 
+	public void deleteCity(Integer cityId) {
+		cityDao.deleteCity(cityId);
+	}
+
 }
