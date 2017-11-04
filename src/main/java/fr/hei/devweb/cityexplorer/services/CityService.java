@@ -6,6 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.UUID;
 
 import fr.hei.devweb.cityexplorer.daos.CityDao;
 import fr.hei.devweb.cityexplorer.pojos.City;
@@ -53,7 +54,8 @@ public class CityService {
 
 		Path picturePath = null;
 		if(picture != null) {
-			picturePath = Paths.get(IMAGE_DIRECTORY_PATH, picture.getSubmittedFileName());
+			String filename = UUID.randomUUID().toString().substring(0,8) + "-" + picture.getSubmittedFileName();
+			picturePath = Paths.get(IMAGE_DIRECTORY_PATH, filename);
 			try {
 				Files.copy(picture.getInputStream(), picturePath);
 			} catch (IOException e) {
